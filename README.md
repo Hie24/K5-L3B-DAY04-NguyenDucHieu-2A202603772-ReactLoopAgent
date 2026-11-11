@@ -1,46 +1,5 @@
 # Lab: Xây dựng Status Investigation Agent
 
-## Bài nộp — Nguyễn Đức Hiếu, 2A202603772, L3B
-
-Agent loop đã hoàn thiện, 55/55 unit tests qua. Hai lần eval cùng cấu hình Groq
-`openai/gpt-oss-120b`, snapshot, 22 case, `max_steps=8`: **90,14 → 93,41/100**.
-Case cải tiến H7: **32 → 100**. Đây là điểm eval tham khảo, không phải điểm bài lab.
-
-- [NOTES.md](NOTES.md): phân tích lỗi, bằng chứng, thay đổi và giới hạn.
-- [eval_before.json](eval_before.json), [eval_after.json](eval_after.json): kết quả gốc từ runner.
-- [eval_comparison.json](eval_comparison.json): đối chiếu từng case và token.
-- [eval_before_manifest.json](eval_before_manifest.json), [eval_after_manifest.json](eval_after_manifest.json): cấu hình và hash.
-
-### Demo CP7 không cần API key
-
-Chạy tại thư mục repo với Python 3.10+ (Windows có thể dùng `.\.venv\Scripts\python.exe`):
-
-```bash
-python demo_trace.py --case A8
-python demo_trace.py --case H7 --compare
-python demo_trace.py --case H8
-python -m unittest discover -s tests -v
-```
-
-Đây là replay **trace thật đã lưu**, không phải lần gọi model mới. A8 minh họa đọc
-chi tiết incident GitHub, đọc incident Cloudflare ở bước tiếp theo rồi trả lời. H7 minh họa tool
-Cloudflare timeout: baseline đoán operational, bản cải tiến báo chưa xác nhận.
-H8 minh họa lỗi còn lại: không gọi tool nhưng bịa incident/URL, dù judge cho 88 điểm.
-H1/H2/H6 vẫn thiếu bước điều tra; validation URL tối thiểu không xác minh mọi claim.
-Khi demo CP7 còn phát hiện A6 nói đã mở incident liên quan nhưng trace chưa có
-lần gọi đó, dù judge cho 100 điểm; xem nhận xét bổ sung trong NOTES.md.
-
-Khi chạy model thật, nạp biến môi trường trước; chương trình không tự đọc `.env`.
-Để tái lập cấu hình eval đã nộp, dùng `PROVIDER=openai`,
-`MODEL=openai/gpt-oss-120b`, `API_ENDPOINT=https://api.groq.com/openai/v1`,
-`MAX_COMPLETION_TOKENS=2048`, `REASONING_EFFORT=low`, key Groq đặt trong
-`OPENAI_API_KEY`; xem manifest để giữ nguyên cấu hình judge và số bước.
-Không đưa key vào repo. Bonus chưa thực hiện.
-
-Nộp link repo public vào bài Day 04 trên LMS bằng tài khoản cá nhân, theo hướng dẫn dưới đây.
-
----
-
 > **Hình thức: Bài cá nhân.** Mỗi cá nhân tự làm, tự tạo repo riêng và tự nộp link lên LMS.
 >
 > **Tên repo nộp:** `K5-L3A-DAY04-[HoVaTen]-[MSSV]-ReactLoopAgent` hoặc `K5-L3B-DAY04-[HoVaTen]-[MSSV]-ReactLoopAgent` (thay `[HoVaTen]` và `[MSSV]`, bỏ cả dấu ngoặc vuông) · **Nơi nộp:** [aithucchien.vinuni.edu.vn](https://aithucchien.vinuni.edu.vn)
