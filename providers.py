@@ -1,8 +1,11 @@
 """Bốn provider cùng một interface. Không chứa agent loop."""
 import json
 import os
+import time
 import urllib.error
+import urllib.parse
 import urllib.request
+import uuid
 
 CONFIG = {
     'openai': ('OPENAI_API_KEY', 'https://api.openai.com/v1/chat/completions'),
@@ -14,14 +17,25 @@ CONFIG = {
 
 def post_json(url, headers, payload):
     req = urllib.request.Request(url, data=json.dumps(payload).encode(), headers={'Content-Type': 'application/json', **headers})
-    try:
-        with urllib.request.urlopen(req, timeout=60) as response:
-            return json.load(response)
-    except urllib.error.HTTPError as exc:
-        # Do not print response bodies: they may contain account or request data.
-        raise RuntimeError(f'Provider trả HTTP {exc.code}; kiểm tra model, key và quota.') from exc
-    except urllib.error.URLError as exc:
-        raise RuntimeError(f'Không kết nối được provider: {exc.reason}') from exc
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as response:
+                return json.load(response)
+        except urllib.error.HTTPError as exc:
+            # Chỉ retry rate limit tạm thời, tối đa 3 lần và tôn trọng Retry-After.
+            retry_after = exc.headers.get('Retry-After') if exc.headers else None
+            try:
+                delay = float(retry_after) if retry_after else 10 * (attempt + 1)
+            except ValueError:
+                delay = 10 * (attempt + 1)
+            if exc.code == 429 and attempt < 3 and 0 <= delay <= 60:
+                exc.close()
+                time.sleep(max(1, delay))
+                continue
+            # Do not print response bodies: they may contain account or request data.
+            raise RuntimeError(f'Provider trả HTTP {exc.code}; kiểm tra model, key và quota.') from exc
+        except urllib.error.URLError as exc:
+            raise RuntimeError(f'Không kết nối được provider: {exc.reason}') from exc
 
 
 class Provider:
@@ -36,7 +50,12 @@ class Provider:
         if not model:
             raise ValueError('Cần đặt MODEL là model có hỗ trợ tool calling.')
         self.name, self.model = name, model
+        self.session_id = uuid.uuid4().hex
         key_name, self.url = CONFIG[name]
+        # API_ENDPOINT là base URL cho dịch vụ tương thích OpenAI của lớp.
+        if name == 'openai' and os.getenv('API_ENDPOINT'):
+            endpoint = os.environ['API_ENDPOINT'].strip().rstrip('/')
+            self.url = endpoint if endpoint.endswith('/chat/completions') else endpoint + '/chat/completions'
         self.key = os.getenv(key_name)
         if not self.key:
             raise ValueError(f'Thiếu {key_name}; xem README.md.')
@@ -45,9 +64,20 @@ class Provider:
         if self.name == 'anthropic':
             return self._anthropic(messages, schemas)
         payload = {'model': self.model, 'messages': messages}
+        if os.getenv('MAX_COMPLETION_TOKENS'):
+            limit = int(os.environ['MAX_COMPLETION_TOKENS'])
+            if limit < 1:
+                raise ValueError('MAX_COMPLETION_TOKENS phải >= 1.')
+            payload['max_completion_tokens'] = limit
+        if os.getenv('REASONING_EFFORT'):
+            payload['reasoning_effort'] = os.environ['REASONING_EFFORT']
         if schemas:
             payload['tools'] = schemas
-        data = post_json(self.url, {'Authorization': f'Bearer {self.key}'}, payload)
+        headers = {'Authorization': f'Bearer {self.key}', 'User-Agent': 'StatusAgentLab/1.0'}
+        # OpenCode yêu cầu một session ID ổn định cho cả hội thoại.
+        if urllib.parse.urlparse(self.url).hostname == 'opencode.ai':
+            headers['x-opencode-session'] = self.session_id
+        data = post_json(self.url, headers, payload)
         choice = data['choices'][0]
         message = choice['message']
         calls = [{'id': c['id'], 'name': c['function']['name'], 'arguments': c['function']['arguments']} for c in message.get('tool_calls', [])]

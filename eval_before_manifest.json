@@ -1,0 +1,47 @@
+{
+  "checkpoint": "CP4 baseline",
+  "provider_adapter": "openai",
+  "api_service": "Groq",
+  "api_endpoint": "https://api.groq.com/openai/v1",
+  "agent_model": "openai/gpt-oss-120b",
+  "judge_model": "openai/gpt-oss-120b",
+  "max_steps": 8,
+  "workers": 1,
+  "max_completion_tokens": 2048,
+  "reasoning_effort": "low",
+  "mode": "snapshot",
+  "dataset": "core",
+  "llm_http_retries": {
+    "max_retries": 3,
+    "status": 429,
+    "max_retry_after_seconds": 60
+  },
+  "sha256": {
+    "agent.py": "8ca6de3ecb942524107e12cd2ce448f52434e5d575ab58c3768d65e58d03a006",
+    "providers.py": "b44a4d3f49cc64f72f1d7a66aa859fe9b8a04823b4cd930a1924c820e16b61b5",
+    "status_tools.py": "e38269099ebdab59265a0eeda952287ea056e6834a3a4ad892dc1dec1e0b3a29",
+    "evals/run_evals.py": "cd01f569f9fa3e522fa90f904eafe6aa2793f15973736de702d9167fdd945bf4",
+    "evals/cases.json": "bca3ea31cb42dae5a952a7522bf87242b25117e565d1a5c3c636c18635abf50b",
+    "evals/scenarios.py": "193c39f8f82cdaa3c4f7b68715ddaf94cdae1f4f760bcc893ccaa42e84436a1f",
+    "evals/grading.py": "e64f759f933830800788f6d315768a1152214faefb947585a1ff9148e7761f25",
+    "fixtures/github.json": "ef189b6b8376d42b50b5676e08264f5745a69141b19cd0ed3f86a1b74217f11c",
+    "fixtures/cloudflare.json": "04eb4851cae0b59cda64313fb82b94c5de7ab8e3a47016844b97762c18bbd57e"
+  },
+  "cp3_tests": {
+    "total": 52,
+    "passed": 50,
+    "failed_expected_for_cp5": [
+      "test_missing_url_at_budget_limit_is_not_completed",
+      "test_missing_url_gets_revision_within_budget"
+    ]
+  },
+  "comparison_requirement": "Keep endpoint, agent/judge models, output budget, reasoning effort, max_steps, snapshot and dataset unchanged for eval_after.json.",
+  "report_sha256": "8463e16784bcd9ab59b72ec1c9439307e55c5ca3bd8774325268723ae974ee3c",
+  "summary": {
+    "total_cases": 22,
+    "scored_cases": 22,
+    "unscored_cases": 0,
+    "score_0_100": 90.14,
+    "partial_mean_0_100": null
+  }
+}

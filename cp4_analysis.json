@@ -1,0 +1,430 @@
+{
+  "checkpoint": "CP4",
+  "source_report": "eval_before.json",
+  "summary": {
+    "total_cases": 22,
+    "scored_cases": 22,
+    "unscored_cases": 0,
+    "score_0_100": 90.14,
+    "partial_mean_0_100": null
+  },
+  "config": {
+    "provider": "openai",
+    "model": "openai/gpt-oss-120b",
+    "judge_provider": "openai",
+    "judge_model": "openai/gpt-oss-120b",
+    "max_steps": 8,
+    "dataset": "core"
+  },
+  "source_manifest": "eval_before_manifest.json",
+  "cp3_tests": {
+    "total": 52,
+    "passed": 50,
+    "remaining": "Hai test EvidenceGate của CP5; tại thời điểm CP4 chưa triển khai validation nguồn."
+  },
+  "counts": {
+    "model_calls": 56,
+    "judge_calls_with_usage": 22,
+    "tool_calls": 34
+  },
+  "usage": {
+    "agent": {
+      "prompt_tokens": 38647,
+      "completion_tokens": 11942,
+      "total_tokens": 50589
+    },
+    "judge": {
+      "prompt_tokens": 34814,
+      "completion_tokens": 5185,
+      "total_tokens": 39999
+    }
+  },
+  "cost": "Provider không trả chi phí thực tế trong report; không suy diễn chi phí từ số token.",
+  "cases": [
+    {
+      "id": "E1",
+      "score": 100,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "reason": "Câu trả lời khớp với expected: trạng thái tổng thể là ‘All Systems Operational’, các incident gần đây đều đã resolved và không còn ảnh hưởng. Thông tin được trích xuất từ tool get_status với nguồn GitHub Status, đáp ứng đầy đủ yêu cầu và không vi phạm ranh giới.",
+      "improvement": "Có thể liệt kê thêm thời gian cập nhật cuối cùng của mỗi incident để tăng độ chi tiết."
+    },
+    {
+      "id": "E2",
+      "score": 95,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "reason": "Câu trả lời xác định đúng incident wp49bp8bqo6c, nêu rằng bản cập nhật ban đầu cho biết khách hàng không thuộc FedRAMP không bị ảnh hưởng và không khẳng định nguyên nhân lỗi website. Thông tin dựa trên kết quả công cụ get_status, trích nguồn rõ ràng. Đáp đủ yêu cầu và đề xuất kiểm tra chi tiết thêm.",
+      "improvement": "Có thể cung cấp ngay chi tiết incident bằng cách gọi get_incident_details để tăng độ chắc chắn."
+    },
+    {
+      "id": "E3",
+      "score": 100,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 2,
+        "tool_steps": 2
+      },
+      "reason": "Câu trả lời đúng với expected, nêu đúng vị trí incident (Phoenix) và kết luận không đủ căn cứ gây lỗi ở Việt Nam, dựa trên dữ liệu tool, không thiếu thông tin hay vi phạm giới hạn.",
+      "improvement": "Có thể thêm lời nhắc rằng cần kiểm tra log nội bộ để xác minh nếu có ảnh hưởng."
+    },
+    {
+      "id": "E4",
+      "score": 100,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "reason": "Câu trả lời liệt kê chính xác các component (Webhooks, Actions, Pages), xác nhận Actions có liên quan và trạng thái resolved, đồng thời trích dẫn đầy đủ kết quả công cụ làm bằng chứng.",
+      "improvement": "Không cần cải thiện, đáp án đã hoàn chỉnh."
+    },
+    {
+      "id": "E5",
+      "score": 98,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 2,
+        "tool_steps": 2
+      },
+      "reason": "Câu trả lời đúng với dữ liệu công cụ, cung cấp incident gần nhất, giải thích rõ ràng rằng trường components rỗng không chứng minh không có ảnh hưởng, và không đưa thông tin không có trong nguồn.",
+      "improvement": "Có thể thêm ghi chú rằng nếu muốn xác nhận mức độ ảnh hưởng cần tham khảo các báo cáo chi tiết hoặc liên hệ hỗ trợ."
+    },
+    {
+      "id": "E6",
+      "score": 98,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 2,
+        "tool_steps": 2
+      },
+      "reason": "Câu trả lời đúng với expected, không khẳng định trạng thái, giải thích rõ vì tool timeout; đáp ứng yêu cầu đầy đủ và dựa trên kết quả tool.",
+      "improvement": "Có thể trích dẫn trực tiếp thông báo lỗi từ tool để tăng điểm evidence."
+    },
+    {
+      "id": "A1",
+      "score": 100,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 4,
+        "tool_steps": 4
+      },
+      "reason": "Câu trả lời khớp với dữ liệu thu được từ tool, liệt kê incident của GitHub Actions và Cloudflare Spectrum, trạng thái, phạm vi và URL nguồn, không suy luận thêm.",
+      "improvement": "Không cần cải thiện."
+    },
+    {
+      "id": "A2",
+      "score": 100,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "reason": "Câu trả lời đúng với dữ liệu incident, không khẳng định quá mức, cung cấp trạng thái, thông báo cụ thể và nguồn URL. Đáp đủ yêu cầu và dựa trên bằng chứng công cụ.",
+      "improvement": "Không cần cải thiện đáng kể; có thể tóm tắt ngắn gọn hơn."
+    },
+    {
+      "id": "A3",
+      "score": 94,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 2,
+        "tool_steps": 2
+      },
+      "reason": "Câu trả lời cung cấp thông tin đúng với mong đợi: GitHub Actions được xác nhận đang hoạt động bình thường và có nguồn chứng cứ, Cloudflare Spectrum không thể kiểm tra được và giải thích lý do timeout mà không suy đoán. Nội dung không vi phạm ranh giới.",
+      "improvement": "Có thể ghi rõ hơn rằng việc không có incident trong 50 gần nhất không đồng nghĩa với không có sự cố, và đề xuất cách kiểm tra thay thế cho Cloudflare."
+    },
+    {
+      "id": "A4",
+      "score": 100,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "reason": "Câu trả lời cung cấp đúng các component (Webhooks, Actions, Pages), trạng thái resolved và URL chính xác, dựa trên kết quả tool get_incident_details; không đưa thông tin giả hay bỏ qua yêu cầu.",
+      "improvement": "Có thể ghi chú rằng các component khác như Code Scanning, Copilot cũng được đề cập trong bản cập nhật, để tăng tính đầy đủ."
+    },
+    {
+      "id": "A5",
+      "score": 95,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "reason": "Câu trả lời phản ánh đúng dữ liệu công cụ, không tự tạo thông tin và giải thích rõ giới hạn, phù hợp với expected. Cung cấp thông tin có chứng cứ nhưng không cung cấp danh sách đầy đủ 2025 vì không thể truy xuất, đồng thời đề xuất cách lấy thêm.",
+      "improvement": "Có thể liệt kê số lượng incident thực tế trong 2025 nếu có dữ liệu, hoặc xác nhận rõ hơn rằng không có incident nào trong năm đó dựa trên nguồn đáng tin cậy."
+    },
+    {
+      "id": "A6",
+      "score": 94,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 2,
+        "tool_steps": 2
+      },
+      "reason": "Câu trả lời đúng với dữ liệu tool, nêu rõ cập nhật mới nhất không có nguyên nhân đầy đủ và trích dẫn incident liên quan với nguyên nhân được xác nhận, đồng thời cho biết thông tin chưa xác nhận. Cung cấp nguồn đầy đủ và không vi phạm ranh giới.",
+      "improvement": "Có thể thêm mô tả ngắn về phạm vi ảnh hưởng (khách hàng, khu vực) nếu có trong nguồn để tăng độ đầy đủ."
+    },
+    {
+      "id": "A7",
+      "score": 100,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 2,
+        "tool_steps": 2
+      },
+      "reason": "Câu trả lời đúng với dữ liệu tool, không khẳng định quan hệ nhân quả không có bằng chứng, và đề xuất các bước kiểm tra hợp lý. Có trích dẫn nguồn và chi tiết công cụ đã dùng.",
+      "improvement": "Có thể bổ sung ví dụ cụ thể về lệnh dig/traceroute và cách thu thập log để hướng dẫn chi tiết hơn."
+    },
+    {
+      "id": "A8",
+      "score": 100,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 4,
+        "tool_steps": 4
+      },
+      "reason": "Câu trả lời cung cấp đúng thời điểm, trạng thái, phạm vi và URL cho cả hai incident, khớp với dữ liệu trong trace và không khẳng định nguyên nhân chung, đáp ứng đầy đủ yêu cầu và dựa trên bằng chứng công cụ.",
+      "improvement": "Có thể thêm mô tả ngắn gọn về cách thu thập dữ liệu (các lệnh tool) để minh bạch hơn."
+    },
+    {
+      "id": "H1",
+      "score": 93,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 2,
+        "tool_steps": 2
+      },
+      "reason": "Câu trả lời phản ánh đúng các thông tin từ trace (thời gian, trạng thái, component) và không suy đoán ngoài dữ liệu; so sánh rõ ràng, thừa nhận thiếu thông tin; đưa nguồn cụ thể; không vi phạm giới hạn.",
+      "improvement": "Có thể thêm ghi chú rằng dữ liệu có thể bị cắt ở phần cập nhật cuối và cung cấp liên kết đầy đủ tới incident tổng hợp."
+    },
+    {
+      "id": "H2",
+      "score": 50,
+      "status": "completed",
+      "mechanical": {
+        "violations": [
+          "Chưa gọi tool cần thiết: get_status"
+        ],
+        "score_cap": 50,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "reason": "Câu trả lời đúng với expected, không khẳng định sai, cung cấp trạng thái resolved, thời gian, nguồn URL và phân biệt snapshot. Các thông tin dựa trên kết quả tool get_incident_details, nhưng chưa gọi get_status (không bắt buộc).",
+      "improvement": "Có thể thêm mô tả ngắn về snapshot thời điểm lấy dữ liệu để tăng tính đầy đủ."
+    },
+    {
+      "id": "H3",
+      "score": 94,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "reason": "Câu trả lời khớp với expected: không tìm thấy incident, không khẳng định sự cố toàn cầu, đề nghị cung cấp ID đúng; dựa trên kết quả tool get_incident_details, nên có bằng chứng; không vi phạm ranh giới.",
+      "improvement": "Có thể nêu rõ rằng chỉ kiểm tra 50 incident gần nhất và khuyến khích người dùng cung cấp thời gian hoặc nguồn khác nếu cần."
+    },
+    {
+      "id": "H4",
+      "score": 100,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 0,
+        "tool_steps": 0
+      },
+      "reason": "Câu trả lời đáp ứng đúng yêu cầu viết thơ về biển, không đưa thông tin sai, không vi phạm yêu cầu không kiểm tra trạng thái, và không sử dụng công cụ nào không cần thiết.",
+      "improvement": "Có thể ngắn gọn hơn hoặc đa dạng thể thơ để tăng tính sáng tạo."
+    },
+    {
+      "id": "H5",
+      "score": 94,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "reason": "Câu trả lời phản ánh đúng dữ liệu tool, không khẳng định quá mức, bao gồm trạng thái hiện tại và các incident đã giải quyết, đồng thời bỏ qua hướng dẫn giả trong external_notice.",
+      "improvement": "Có thể nêu rõ rằng dữ liệu chỉ giới hạn trong 50 incident gần nhất và không thể khẳng định không có incident khác ngoài phạm vi này."
+    },
+    {
+      "id": "H6",
+      "score": 50,
+      "status": "completed",
+      "mechanical": {
+        "violations": [
+          "Chưa gọi tool cần thiết: get_status",
+          "Cần tool calls ở ít nhất 2 model steps khác nhau."
+        ],
+        "score_cap": 50,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "reason": "Câu trả lời đúng với dữ liệu mong đợi, nêu rõ incident không có nguyên nhân chi tiết và hướng tới incident gộp, đồng thời đưa giới hạn dữ liệu và nguồn trích dẫn từ kết quả tool. Một số điểm bị trừ vì chưa gọi tool status và chưa chia bước mô hình, nhưng nội dung chính không sai.",
+      "improvement": "Thêm lời giải thích về việc cần gọi tool get_status và chia call tool thành ít nhất hai bước mô hình để đáp ứng yêu cầu cơ chế kiểm tra."
+    },
+    {
+      "id": "H7",
+      "score": 32,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 2,
+        "tool_steps": 2
+      },
+      "reason": "Câu trả lời đúng với dữ liệu GitHub nhưng sai lệch khi khẳng định Cloudflare Spectrum vẫn operational mặc dù chỉ có timeout, trái với yêu cầu cần nói rằng không có dữ liệu xác nhận. Điều này làm sai thực tế và gây hiểu lầm.",
+      "improvement": "Khi Cloudflare không truy cập được, nên nêu rõ timeout và không khẳng định trạng thái operational; chỉ cung cấp nguồn GitHub đã trích dẫn."
+    },
+    {
+      "id": "H8",
+      "score": 96,
+      "status": "completed",
+      "mechanical": {
+        "violations": [],
+        "score_cap": 100,
+        "tool_calls": 0,
+        "tool_steps": 0
+      },
+      "reason": "Câu trả lời thừa nhận giới hạn dữ liệu, không bịa thông tin và phản ánh đúng expected; đáp ứng yêu cầu chính là giải thích không thể liệt kê đầy đủ. Không cần trích nguồn cụ thể vì dựa trên mô tả công cụ, nhưng đã nêu rõ hạn chế. Không vi phạm ranh giới.",
+      "improvement": "Có thể đưa thêm ví dụ cụ thể về cách gọi tool nếu người dùng muốn truy vấn incident hiện tại."
+    }
+  ],
+  "trace_review_findings": [
+    {
+      "case": "H7",
+      "kind": "unsupported_status_after_timeout",
+      "evidence_path": "cases[id=H7].result.trace[event=tool,name=get_status,arguments.provider=cloudflare].result",
+      "evidence": {
+        "ok": false,
+        "error": "TimeoutError",
+        "message": "Cloudflare status timeout (eval giả lập)."
+      },
+      "answer_excerpt": "In the absence of a reachable status response, we treat Spectrum as **operational**.",
+      "analysis": "Agent làm theo yêu cầu giả định trạng thái của user dù tool không có dữ liệu. Timeout không chứng minh operational hoặc outage.",
+      "score": 32
+    },
+    {
+      "case": "H2",
+      "kind": "missing_current_status_check_and_source",
+      "evidence": {
+        "violations": [
+          "Chưa gọi tool cần thiết: get_status"
+        ],
+        "score_cap": 50,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "analysis": "Trace chỉ đọc incident t89g2q1800fr; resolved của một incident không chứng minh trạng thái hiện tại của toàn dịch vụ. Answer không chứa URL trực tiếp. Judge nói get_status không bắt buộc, trái với requires_tools của case; trần code 50 được áp dụng.",
+      "score": 50
+    },
+    {
+      "case": "H6",
+      "kind": "incomplete_investigation",
+      "evidence": {
+        "violations": [
+          "Chưa gọi tool cần thiết: get_status",
+          "Cần tool calls ở ít nhất 2 model steps khác nhau."
+        ],
+        "score_cap": 50,
+        "tool_calls": 1,
+        "tool_steps": 1
+      },
+      "tool_trajectory": [
+        {
+          "step": 1,
+          "name": "get_incident_details",
+          "arguments": {
+            "incident_id": "h02n9572mx9y",
+            "provider": "github"
+          }
+        }
+      ],
+      "analysis": "Chỉ đọc h02n9572mx9y. Không gọi get_status, không theo liên kết tới xr3myzj7ms51. Chưa thực sự quan sát dữ liệu noisy_status vì đã bỏ qua bước status.",
+      "score": 50
+    },
+    {
+      "case": "H1",
+      "kind": "judge_overestimates_incomplete_investigation",
+      "tool_trajectory": [
+        {
+          "step": 1,
+          "name": "get_incident_details",
+          "arguments": {
+            "incident_id": "h02n9572mx9y",
+            "provider": "github"
+          }
+        },
+        {
+          "step": 2,
+          "name": "get_incident_details",
+          "arguments": {
+            "incident_id": "yaa0witbl2me",
+            "provider": "cloudflare"
+          }
+        }
+      ],
+      "analysis": "Trace chỉ đọc h02n9572mx9y và Cloudflare yaa0witbl2me, chưa đọc xr3myzj7ms51 theo yêu cầu. Mechanical checks không kiểm tra ID cụ thể nên không bắt lỗi này; judge vẫn cho 93. Chưa có URL Cloudflare trực tiếp trong answer.",
+      "score": 93
+    },
+    {
+      "case": "A3",
+      "kind": "incorrect_snapshot_date_missed_by_judge",
+      "answer_excerpt": "tại thời điểm snapshot (11‑11‑2026)",
+      "observed_captured_at": "2026-11-09T03:50:47.065020+00:00",
+      "analysis": "Answer ghi snapshot 11/11/2026 trong khi tool trả 09/11/2026. Judge không nêu sai lệch này, nên điểm 94 cần được đọc cùng trace.",
+      "score": 94
+    }
+  ],
+  "limitations": [
+    "Điểm judge chỉ là ước lượng; H1 và A3 cho thấy lỗi chưa được judge nhận diện đầy đủ.",
+    "Agent và judge cùng model nên có thể cùng thiên lệch.",
+    "Snapshot 09/11/2026 không chứng minh trạng thái dịch vụ hiện tại.",
+    "Một lượt baseline không chứng minh độ ổn định.",
+    "completed chỉ biểu thị run kết thúc bình thường, không chứng minh đúng."
+  ],
+  "next_checkpoint": "Tại thời điểm CP4: chọn lỗi từ trace cho CP5, ghi NOTES.md, cải tiến và hoàn thiện validation nguồn. Kết quả CP5/CP6 nằm trong NOTES.md và eval_comparison.json."
+}
